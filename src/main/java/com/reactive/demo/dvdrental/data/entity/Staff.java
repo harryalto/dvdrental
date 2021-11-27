@@ -3,21 +3,25 @@ package com.reactive.demo.dvdrental.data.entity;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.relational.core.mapping.Table;
 
+
+@Table
 @Value
 @Builder
 public class Staff {
     @Id
-    private long staffId;
-    private String firstName;
-    private String lastName;
-    private long addressId;
-    private String email;
-    private long storeId;
-    private String active;
-    private String username;
-    private String password;
-    private java.sql.Timestamp lastUpdate;
-    private String picture;
-
+    int staffId;
+    String firstName;
+    String lastName;
+    long addressId;
+    String email;
+    long storeId;
+    String active;
+    String username;
+    String password;
+    @LastModifiedDate
+    java.sql.Timestamp lastUpdate;
+    String picture;
 }
