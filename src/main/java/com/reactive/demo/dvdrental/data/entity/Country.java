@@ -8,12 +8,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 @Value
 @Builder
-public class Inventory {
-
-  @Id
-  private long inventoryId;
-  private long filmId;
-  private long storeId;
-  private java.sql.Timestamp lastUpdate;
+public class Country {
+    @Id
+    private long countryId;
+    private String country;
+    private java.sql.Timestamp lastUpdate;
 
 }
