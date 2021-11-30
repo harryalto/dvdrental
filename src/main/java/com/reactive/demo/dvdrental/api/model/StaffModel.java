@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-@Schema(title = "Staff Core Model")
+@Schema(title = "Staff Model")
 @Data
 @SuperBuilder
 public class StaffModel extends StaffCoreModel {
