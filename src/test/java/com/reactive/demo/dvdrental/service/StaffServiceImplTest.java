@@ -87,5 +87,23 @@ class StaffServiceImplTest {
 
     }
 
+    @Test
+    @DisplayName("Create returns existing staff resource")
+    public void testCreateStaff_SuccessfulAlreadyExists() {
+        BDDMockito.when(staffRepository.findFirstByFirstNameAndLastNameAndEmailAndUsername(ArgumentMatchers.anyString(),
+                        ArgumentMatchers.anyString(),
+                        ArgumentMatchers.anyString(),
+                        ArgumentMatchers.anyString()))
+                .thenReturn(Mono.just(staffSample));
+        BDDMockito.when(genericMapper.convertToStaff(ArgumentMatchers.any(StaffCoreModel.class)))
+                .thenReturn(staffSample);
+        BDDMockito.verify(staffRepository, BDDMockito.times(0)).save(ArgumentMatchers.any(Staff.class));
+
+        StepVerifier.create(staffService.save(staffCoreModel))
+                .expectSubscription()
+                .expectNext(Pair.of(true, staffSample))
+                .verifyComplete();
+    }
+
 
 }

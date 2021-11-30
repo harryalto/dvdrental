@@ -39,7 +39,7 @@ public class StaffServiceImpl implements StaffService {
     public Mono<Pair<Boolean, Staff>> save(StaffCoreModel staffCoreModel) {
         Staff staff = genericMapper.convertToStaff(staffCoreModel);
         // first find and if not found then insert
-        return staffRepository
+      /*  return staffRepository
                 .findFirstByFirstNameAndLastNameAndEmailAndUsername(
                         staff.getFirstName(),
                         staff.getLastName(),
@@ -52,6 +52,28 @@ public class StaffServiceImpl implements StaffService {
                 .switchIfEmpty(
                         staffRepository.save(staff)
                                 .map(saved -> Pair.of(false, saved)));
+                                */
+        return Mono.just(staff).
+                flatMap(input ->
+                        staffRepository
+                                .findFirstByFirstNameAndLastNameAndEmailAndUsername(
+                                        input.getFirstName(),
+                                        input.getLastName(),
+                                        input.getEmail(),
+                                        input.getUsername())
+                                .map(existingStaff -> Pair.of(true, existingStaff))
+                                .defaultIfEmpty(Pair.of(false, staff))
+                ).
+                flatMap(data ->
+                        {
+                            if (data.getFirst().booleanValue() == false) {
+                                return staffRepository.save(staff).map(savedData -> Pair.of(false, savedData));
+                            } else
+                                return Mono.just(data);
+                        }
+                );
+
+
     }
 
 }
