@@ -37,12 +37,6 @@ class StaffServiceImplTest {
     private StaffCoreModel staffCoreModel = StaffCoreModel.builder().firstName("John").lastName("Doe").username("something").
             email("aa@gmail.com").build();
 
-    @BeforeAll
-    public static void blackHoundSetup() {
-        BlockHound.install();
-    }
-
-
     @Test
     @DisplayName("Get by Id when there is data")
     public void testGetById_Successful() {

@@ -36,10 +36,6 @@ class StaffControllerImplTest {
     private StaffModel staffResponse = StaffModel.builder().staffId(1L).firstName("John").lastName("Doe").username("something").
             email("aa@gmail.com").build();
 
-    @BeforeAll
-    public static void blockHoundSetup() {
-        BlockHound.install();
-    }
 
     @BeforeEach
     public void setUp() {
@@ -52,21 +48,6 @@ class StaffControllerImplTest {
 
     }
 
-    @Test
-    public void blockHoundWorks() {
-        try {
-            FutureTask<?> task = new FutureTask<>(() -> {
-                Thread.sleep(0); //NOSONAR
-                return "";
-            });
-            Schedulers.parallel().schedule(task);
-
-            task.get(10, TimeUnit.SECONDS);
-            Assertions.fail("should fail");
-        } catch (Exception e) {
-            Assertions.assertTrue(e.getCause() instanceof BlockingOperationError);
-        }
-    }
 
     @Test
     @DisplayName("findById returns a Mono with staff when it exists")
