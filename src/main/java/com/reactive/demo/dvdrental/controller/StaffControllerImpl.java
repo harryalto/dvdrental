@@ -3,7 +3,6 @@ package com.reactive.demo.dvdrental.controller;
 import com.reactive.demo.dvdrental.Pair;
 import com.reactive.demo.dvdrental.api.model.StaffCoreModel;
 import com.reactive.demo.dvdrental.api.model.StaffModel;
-import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.data.mapper.GenericMapper;
 import com.reactive.demo.dvdrental.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.util.function.Consumer;
 
 @RestController
 @Slf4j
@@ -51,11 +48,5 @@ public class StaffControllerImpl implements StaffController {
                         return new ResponseEntity<>(pairData.getSecond(), HttpStatus.CREATED);
                     }
                 });
-    }
-
-    private Consumer<Staff> getStaffConsumer() {
-        return data -> {
-            System.out.println("Data " + data);
-        };
     }
 }

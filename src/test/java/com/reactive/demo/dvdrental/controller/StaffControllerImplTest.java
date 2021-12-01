@@ -7,7 +7,6 @@ import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.service.StaffService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -45,7 +44,7 @@ class StaffControllerImplTest {
     @BeforeEach
     public void setUp() {
 
-        BDDMockito.when(staffService.findById(ArgumentMatchers.anyLong()))
+        BDDMockito.when(staffService.findById(1L))
                 .thenReturn(Mono.just(staffSample));
 
         BDDMockito.when(staffService.save(staffCoreModel))
@@ -70,12 +69,45 @@ class StaffControllerImplTest {
     }
 
     @Test
-    @DisplayName("findById returns a Mono with anime when it exists")
-    public void findById_ReturnMonoAnime_WhenSuccessful() {
+    @DisplayName("findById returns a Mono with staff when it exists")
+    public void findById_ReturnMonoStaff_Success() {
         StepVerifier.create(staffController.findById(1L))
                 .expectSubscription()
                 .expectNext(staffResponse)
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("findById returns empty with staff when it doesnt exists")
+    public void findById_ReturnMonoEmpty_Failure() {
+        BDDMockito.when(staffService.findById(2L))
+                .thenReturn(Mono.empty());
+        StepVerifier.create(staffController.findById(2L))
+                .expectSubscription()
+                .expectNextCount(0).
+                verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Create Staff new")
+    public void createNew_Success() {
+        BDDMockito.when(staffService.save(staffCoreModel))
+                .thenReturn(Mono.just(Pair.of(true, staffSample)));
+        StepVerifier.create(staffController.create(staffCoreModel))
+                .expectSubscription()
+                .expectNextCount(1).
+                verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Return existing staff")
+    public void createReturnExisting_Success() {
+        BDDMockito.when(staffService.save(staffCoreModel))
+                .thenReturn(Mono.just(Pair.of(false, staffSample)));
+        StepVerifier.create(staffController.create(staffCoreModel))
+                .expectSubscription()
+                .expectNextCount(1).
+                verifyComplete();
     }
 
 
