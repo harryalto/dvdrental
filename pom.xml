@@ -188,10 +188,10 @@
                                         </limit>
                                     </limits>
                                     <excludes>
-                                        <exclude>com.reactive.demo.dvdrental.api.model.*</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.entity.*</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.mapper.GenericMapperImpl</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.mapper.GenericMapper</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/api/model/*.class</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/entity/*.class</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/mapper/GenericMapperImpl.class</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/mapper/GenericMapper.class</exclude>
                                     </excludes>
                                 </rule>
                             </rules>

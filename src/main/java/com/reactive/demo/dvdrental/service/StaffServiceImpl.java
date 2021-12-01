@@ -8,7 +8,6 @@ import com.reactive.demo.dvdrental.data.repository.StaffRepository;
 import com.reactive.demo.dvdrental.exception.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,20 +15,15 @@ import reactor.core.publisher.Mono;
 public class StaffServiceImpl implements StaffService {
 
     private final StaffRepository staffRepository;
-    private final GenericMapper genericMapper;
 
-    public StaffServiceImpl(final StaffRepository staffRepository,
-                            GenericMapper genericMapper) {
+    public StaffServiceImpl(final StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
-        this.genericMapper = genericMapper;
     }
 
     @Override
     public Mono<Staff> findById(final Long id) {
 
-        Flux<Staff> results = staffRepository.findFirstByStaffId(id);
-
-        return results.
+        return staffRepository.findFirstByStaffId(id).
                 switchIfEmpty(Mono.error(new DataNotFoundException(id.intValue()))).
                 single().
                 log("Reached here");
@@ -37,22 +31,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public Mono<Pair<Boolean, Staff>> save(StaffCoreModel staffCoreModel) {
-        Staff staff = genericMapper.convertToStaff(staffCoreModel);
+        Staff staff = GenericMapper.INSTANCE.convertToStaff(staffCoreModel);
         // first find and if not found then insert
-      /*  return staffRepository
-                .findFirstByFirstNameAndLastNameAndEmailAndUsername(
-                        staff.getFirstName(),
-                        staff.getLastName(),
-                        staff.getEmail(),
-                        staff.getUsername())
-                .flatMap(
-                        foundStaff -> null != foundStaff ?
-                                Mono.just(Pair.of(true, foundStaff))
-                                : Mono.just(Pair.of(false, staff)))
-                .switchIfEmpty(
-                        staffRepository.save(staff)
-                                .map(saved -> Pair.of(false, saved)));
-                                */
         return Mono.just(staff).
                 flatMap(input ->
                         staffRepository
@@ -72,8 +52,5 @@ public class StaffServiceImpl implements StaffService {
                                 return Mono.just(data);
                         }
                 );
-
-
     }
-
 }
