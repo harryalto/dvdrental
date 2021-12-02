@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -19,6 +20,15 @@ public class StaffControllerImpl implements StaffController {
 
     public StaffControllerImpl(final StaffService staffService) {
         this.staffService = staffService;
+    }
+
+    @Override
+    public Flux<StaffModel> findAll() {
+        return staffService.findAll().map(data -> {
+            StaffModel staffResource = GenericMapper.INSTANCE.convert(data);
+            System.out.println(staffResource.toString());
+            return staffResource;
+        });
     }
 
     //@ApiOperation("Find Staff by its id")

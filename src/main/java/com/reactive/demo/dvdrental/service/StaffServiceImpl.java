@@ -8,6 +8,7 @@ import com.reactive.demo.dvdrental.data.repository.StaffRepository;
 import com.reactive.demo.dvdrental.exception.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -25,8 +26,7 @@ public class StaffServiceImpl implements StaffService {
 
         return staffRepository.findFirstByStaffId(id).
                 switchIfEmpty(Mono.error(new DataNotFoundException(id.intValue()))).
-                single().
-                log("Reached here");
+                single();
     }
 
     @Override
@@ -52,5 +52,11 @@ public class StaffServiceImpl implements StaffService {
                                 return Mono.just(data);
                         }
                 );
+    }
+
+    @Override
+    public Flux<Staff> findAll() {
+        return staffRepository.findAll()
+                .switchIfEmpty(Mono.error(new DataNotFoundException(0)));
     }
 }
