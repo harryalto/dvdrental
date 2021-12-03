@@ -214,6 +214,7 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>prepare-unit-tests</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>

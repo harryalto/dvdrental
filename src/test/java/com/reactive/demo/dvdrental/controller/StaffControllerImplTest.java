@@ -5,20 +5,17 @@ import com.reactive.demo.dvdrental.api.model.StaffCoreModel;
 import com.reactive.demo.dvdrental.api.model.StaffModel;
 import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.service.StaffService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import reactor.blockhound.BlockHound;
-import reactor.blockhound.BlockingOperationError;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
 
 @ExtendWith(SpringExtension.class)
 class StaffControllerImplTest {
@@ -36,22 +33,30 @@ class StaffControllerImplTest {
     private StaffModel staffResponse = StaffModel.builder().staffId(1L).firstName("John").lastName("Doe").username("something").
             email("aa@gmail.com").build();
 
-
     @BeforeEach
     public void setUp() {
-
         BDDMockito.when(staffService.findById(1L))
                 .thenReturn(Mono.just(staffSample));
-
         BDDMockito.when(staffService.save(staffCoreModel))
                 .thenReturn(Mono.just(Pair.of(false, staffSample)));
-
     }
 
+    @Test
+    @DisplayName("findAll returns Flux ")
+    public void findAll_ReturnFluxStaff_Success() {
+        BDDMockito.when(staffService.findAll())
+                .thenReturn(Flux.just(staffSample));
+        StepVerifier.create(staffController.findAll())
+                .expectSubscription()
+                .expectNext(new StaffModel[]{staffResponse})
+                .verifyComplete();
+    }
 
     @Test
     @DisplayName("findById returns a Mono with staff when it exists")
     public void findById_ReturnMonoStaff_Success() {
+        BDDMockito.when(staffService.findById(2L))
+                .thenReturn(Mono.just(staffSample));
         StepVerifier.create(staffController.findById(1L))
                 .expectSubscription()
                 .expectNext(staffResponse)
@@ -91,5 +96,14 @@ class StaffControllerImplTest {
                 verifyComplete();
     }
 
+    @Test
+    @DisplayName("deleteById returns a Mono void when it exists")
+    public void deleteById_ReturnMonoVoid_Success() {
+        BDDMockito.when(staffService.delete(2L))
+                .thenReturn(Mono.empty());
+        StepVerifier.create(staffController.deleteById(2L))
+                .expectSubscription()
+                .verifyComplete();
+    }
 
 }

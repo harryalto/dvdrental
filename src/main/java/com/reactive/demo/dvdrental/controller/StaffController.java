@@ -53,5 +53,16 @@ public interface StaffController {
     })
     Mono<ResponseEntity<StaffModel>> create(@Valid @RequestBody StaffCoreModel staffCoreModelRequest);
 
-
+    @DeleteMapping(value = "/{id}")
+    @Operation(
+            summary = "Deletes a Staff",
+            description = "Deletes a Staff by their Id.",
+            tags = {"Staff"},
+            responses = {
+                    @ApiResponse(description = "Deleted", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+            }
+    )
+    Mono<ResponseEntity<Void>> deleteById(@PathVariable @Parameter(description = "The Id of the person to delete.") Long id);
 }

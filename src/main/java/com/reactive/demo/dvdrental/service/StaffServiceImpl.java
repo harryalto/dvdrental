@@ -25,8 +25,9 @@ public class StaffServiceImpl implements StaffService {
     public Mono<Staff> findById(final Long id) {
 
         return staffRepository.findFirstByStaffId(id).
-                switchIfEmpty(Mono.error(new DataNotFoundException(id.intValue()))).
-                single();
+                switchIfEmpty(Mono.error(new DataNotFoundException(id.intValue())))
+                .single()
+                ;
     }
 
     @Override
@@ -58,5 +59,20 @@ public class StaffServiceImpl implements StaffService {
     public Flux<Staff> findAll() {
         return staffRepository.findAll()
                 .switchIfEmpty(Mono.error(new DataNotFoundException(0)));
+    }
+
+    @Override
+    public Mono<Boolean> delete(Long id) {
+        return Mono.just(id)
+                .flatMap(inputId ->
+                        staffRepository.findById(inputId)
+                                .map(existingStaff -> Pair.of(true, existingStaff))
+                                .defaultIfEmpty(Pair.of(false, null)))
+                .flatMap(pair -> {
+                    if (pair.getFirst()) {
+                        return staffRepository.delete(pair.getSecond()).then(Mono.just(Boolean.TRUE));
+                    } else
+                        return Mono.just(Boolean.FALSE);
+                });
     }
 }

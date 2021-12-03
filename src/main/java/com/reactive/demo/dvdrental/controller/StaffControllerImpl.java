@@ -59,4 +59,14 @@ public class StaffControllerImpl implements StaffController {
                     }
                 });
     }
+
+    @Override
+    public Mono<ResponseEntity<Void>> deleteById(Long id) {
+        return staffService.delete(id).flatMap(result -> {
+            if (result.booleanValue() == Boolean.TRUE) {
+                return Mono.just(ResponseEntity.noContent().build());
+            } else
+                return Mono.just(ResponseEntity.notFound().build());
+        });
+    }
 }

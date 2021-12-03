@@ -6,7 +6,6 @@ import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.data.mapper.GenericMapper;
 import com.reactive.demo.dvdrental.data.repository.StaffRepository;
 import com.reactive.demo.dvdrental.exception.DataNotFoundException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +14,6 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import reactor.blockhound.BlockHound;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -36,6 +34,30 @@ class StaffServiceImplTest {
             email("aa@gmail.com").build();
     private StaffCoreModel staffCoreModel = StaffCoreModel.builder().firstName("John").lastName("Doe").username("something").
             email("aa@gmail.com").build();
+
+    @Test
+    @DisplayName("Get All Staff members")
+    public void testFindAll_Successful() {
+        BDDMockito.when(staffRepository.findAll())
+                .thenReturn(Flux.just(staffSample));
+        StepVerifier.create(staffService.findAll())
+                .expectSubscription()
+                .expectNext(staffSample)
+                .verifyComplete();
+
+    }
+
+    @Test
+    @DisplayName("Get All Staff members returns empty")
+    public void testFindAll_NoDataFound() {
+        BDDMockito.when(staffRepository.findAll())
+                .thenReturn(Flux.empty());
+        StepVerifier.create(staffService.findAll())
+                .expectSubscription()
+                .expectError(DataNotFoundException.class)
+                .verify();
+
+    }
 
     @Test
     @DisplayName("Get by Id when there is data")
@@ -97,5 +119,31 @@ class StaffServiceImplTest {
                 .expectSubscription()
                 .expectNext(Pair.of(true, staffSample))
                 .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("Delete by Id when there is data")
+    public void testDeleteById_Successful() {
+        BDDMockito.when(staffRepository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Mono.just(staffSample));
+        BDDMockito.when(staffRepository.delete(ArgumentMatchers.any(Staff.class)))
+                .thenReturn(Mono.empty());
+        StepVerifier.create(staffService.delete(1L))
+                .expectSubscription()
+                .expectNext(Boolean.TRUE)
+                .verifyComplete();
+
+    }
+
+    @Test
+    @DisplayName("Delete by Id when there is no data")
+    public void testDeleteById_WhenEmpty() {
+        BDDMockito.when(staffRepository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Mono.empty());
+        StepVerifier.create(staffService.delete(1L))
+                .expectSubscription()
+                .expectNext(Boolean.FALSE)
+                .verifyComplete();
+        BDDMockito.verify(staffRepository, BDDMockito.times(0)).delete(ArgumentMatchers.any(Staff.class));
     }
 }

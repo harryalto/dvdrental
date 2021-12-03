@@ -13,4 +13,6 @@ public interface StaffService {
     Mono<Pair<Boolean, Staff>> save(StaffCoreModel staffCoreModel);
 
     Flux<Staff> findAll();
+
+    Mono<Boolean> delete(Long id);
 }
