@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -98,11 +99,23 @@ class StaffControllerImplTest {
 
     @Test
     @DisplayName("deleteById returns a Mono void when it exists")
-    public void deleteById_ReturnMonoVoid_Success() {
+    public void deleteById_ReturnHTTP204OK_Success() {
         BDDMockito.when(staffService.delete(2L))
-                .thenReturn(Mono.empty());
+                .thenReturn(Mono.just(Boolean.TRUE));
         StepVerifier.create(staffController.deleteById(2L))
                 .expectSubscription()
+                .expectNext(ResponseEntity.noContent().build())
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("deleteById returns a Mono void when it doesnt exit")
+    public void deleteById_ReturnMonoVoid_Success() {
+        BDDMockito.when(staffService.delete(2L))
+                .thenReturn(Mono.just(Boolean.FALSE));
+        StepVerifier.create(staffController.deleteById(2L))
+                .expectSubscription()
+                .expectNext(ResponseEntity.notFound().build())
                 .verifyComplete();
     }
 
