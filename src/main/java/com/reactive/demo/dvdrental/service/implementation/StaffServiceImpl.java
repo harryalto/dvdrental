@@ -1,4 +1,4 @@
-package com.reactive.demo.dvdrental.service;
+package com.reactive.demo.dvdrental.service.implementation;
 
 import com.reactive.demo.dvdrental.Pair;
 import com.reactive.demo.dvdrental.api.model.StaffCoreModel;
@@ -6,6 +6,7 @@ import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.data.mapper.GenericMapper;
 import com.reactive.demo.dvdrental.data.repository.StaffRepository;
 import com.reactive.demo.dvdrental.exception.DataNotFoundException;
+import com.reactive.demo.dvdrental.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

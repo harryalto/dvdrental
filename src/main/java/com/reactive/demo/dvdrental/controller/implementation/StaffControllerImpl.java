@@ -1,8 +1,9 @@
-package com.reactive.demo.dvdrental.controller;
+package com.reactive.demo.dvdrental.controller.implementation;
 
 import com.reactive.demo.dvdrental.Pair;
 import com.reactive.demo.dvdrental.api.model.StaffCoreModel;
 import com.reactive.demo.dvdrental.api.model.StaffModel;
+import com.reactive.demo.dvdrental.controller.StaffController;
 import com.reactive.demo.dvdrental.data.mapper.GenericMapper;
 import com.reactive.demo.dvdrental.service.StaffService;
 import lombok.extern.slf4j.Slf4j;
