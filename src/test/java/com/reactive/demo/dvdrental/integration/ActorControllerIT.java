@@ -2,11 +2,10 @@ package com.reactive.demo.dvdrental.integration;
 
 import com.reactive.demo.dvdrental.api.model.ActorModel;
 import com.reactive.demo.dvdrental.api.request.ActorRequest;
+import com.reactive.demo.dvdrental.controller.ActorController;
 import com.reactive.demo.dvdrental.data.entity.Actor;
 import com.reactive.demo.dvdrental.data.repository.ActorRepository;
-import com.reactive.demo.dvdrental.data.repository.StaffRepository;
 import com.reactive.demo.dvdrental.service.implementation.ActorServiceImpl;
-import com.reactive.demo.dvdrental.service.implementation.StaffServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,15 +23,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(SpringExtension.class)
-@WebFluxTest
-@Import({StaffServiceImpl.class, ActorServiceImpl.class})
+@WebFluxTest(controllers = ActorController.class)
+@Import(ActorServiceImpl.class)
 public class ActorControllerIT {
 
     @MockBean
     private ActorRepository actorRepositoryMock;
-
-    @MockBean
-    private StaffRepository staffRepositoryMock;
 
     @Autowired
     private WebTestClient testClient;

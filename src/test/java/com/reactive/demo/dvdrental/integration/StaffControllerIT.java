@@ -2,6 +2,8 @@ package com.reactive.demo.dvdrental.integration;
 
 import com.reactive.demo.dvdrental.api.model.StaffCoreModel;
 import com.reactive.demo.dvdrental.api.model.StaffModel;
+import com.reactive.demo.dvdrental.controller.ActorController;
+import com.reactive.demo.dvdrental.controller.StaffController;
 import com.reactive.demo.dvdrental.data.entity.Staff;
 import com.reactive.demo.dvdrental.data.repository.ActorRepository;
 import com.reactive.demo.dvdrental.data.repository.StaffRepository;
@@ -18,14 +20,16 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @ExtendWith(SpringExtension.class)
-@WebFluxTest
-@Import({StaffServiceImpl.class, ActorServiceImpl.class})
+@WebFluxTest(controllers = StaffController.class)
+@DirtiesContext
+@Import({StaffServiceImpl.class})
 public class StaffControllerIT {
 
     @MockBean

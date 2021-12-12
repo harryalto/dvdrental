@@ -11,6 +11,8 @@ public class AddressModel {
     private String address2;
     private String district;
     private long cityId;
+    private String country;
+    private String city;
     private String postalCode;
     private String phone;
 }
