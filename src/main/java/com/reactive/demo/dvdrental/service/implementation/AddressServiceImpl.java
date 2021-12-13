@@ -67,7 +67,7 @@ public class AddressServiceImpl implements AddressService {
                         Mono.just(tuple)
                                 .zipWith(
                                         Mono.justOrEmpty(countryMap.get(tuple.getT2().getCountryId()))
-                                                .switchIfEmpty(countryRepository.findById(tuple.getT2().getCountryId()))
+                                                .switchIfEmpty(Mono.defer(() -> countryRepository.findById(tuple.getT2().getCountryId())))
                                                 .doOnNext(data ->
                                                         {
                                                             System.out.println("Country Map Size" + countryMap.size());
@@ -87,7 +87,7 @@ public class AddressServiceImpl implements AddressService {
                 Mono.just(address)
                         .zipWith(
                                 Mono.justOrEmpty(cityMap.containsKey(address.getCityId()) ? cityMap.get(address.getCityId()) : null)
-                                        .switchIfEmpty(
+                                        .switchIfEmpty( Mono.defer( () ->
                                                 cityRepository.findById(address.getCityId()).doOnNext(data ->
                                                 {
                                                     System.out.println("City Map Size" + cityMap.size());
@@ -96,7 +96,7 @@ public class AddressServiceImpl implements AddressService {
                                                     }
                                                 })
                                         )
-                        )
+                        ))
         );
     }
 
