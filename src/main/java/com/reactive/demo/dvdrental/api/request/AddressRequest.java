@@ -19,6 +19,9 @@ public class AddressRequest {
     private String address2;
     private String district;
     @NotNull
+    private String postalCode;
+    private String phone;
+    @NotNull
     private String city;
     @NotNull
     private String country;

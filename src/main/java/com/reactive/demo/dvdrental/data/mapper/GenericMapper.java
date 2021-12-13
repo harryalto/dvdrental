@@ -2,6 +2,7 @@ package com.reactive.demo.dvdrental.data.mapper;
 
 import com.reactive.demo.dvdrental.api.model.*;
 import com.reactive.demo.dvdrental.api.request.ActorRequest;
+import com.reactive.demo.dvdrental.api.request.AddressRequest;
 import com.reactive.demo.dvdrental.data.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -42,4 +43,5 @@ public interface GenericMapper {
     Actor actorModelToActor(ActorModel actorModel);
 
     Actor actorRequestToActor(ActorRequest actorModel);
+    Address addressRequestToAddress(AddressRequest addressRequest);
 }

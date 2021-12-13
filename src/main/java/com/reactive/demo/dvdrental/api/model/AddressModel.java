@@ -1,10 +1,12 @@
 package com.reactive.demo.dvdrental.api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 @Schema(title = "Address Model")
 @Data
+@Builder
 public class AddressModel {
     private long addressId;
     private String address;

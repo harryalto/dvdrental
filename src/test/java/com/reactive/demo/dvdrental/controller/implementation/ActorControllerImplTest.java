@@ -1,4 +1,4 @@
-package com.reactive.demo.dvdrental.controller;
+package com.reactive.demo.dvdrental.controller.implementation;
 
 import com.reactive.demo.dvdrental.Pair;
 import com.reactive.demo.dvdrental.api.model.ActorModel;
