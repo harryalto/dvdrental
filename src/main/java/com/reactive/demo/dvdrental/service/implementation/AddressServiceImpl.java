@@ -23,7 +23,6 @@ import java.util.HashMap;
 
 @Service
 @Slf4j
-
 public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
     private CountryRepository countryRepository;
@@ -87,16 +86,16 @@ public class AddressServiceImpl implements AddressService {
                 Mono.just(address)
                         .zipWith(
                                 Mono.justOrEmpty(cityMap.containsKey(address.getCityId()) ? cityMap.get(address.getCityId()) : null)
-                                        .switchIfEmpty( Mono.defer( () ->
-                                                cityRepository.findById(address.getCityId()).doOnNext(data ->
-                                                {
-                                                    System.out.println("City Map Size" + cityMap.size());
-                                                    if (!cityMap.containsKey(data.getCityId())) {
-                                                        cityMap.put(data.getCityId(), data);
-                                                    }
-                                                })
-                                        )
-                        ))
+                                        .switchIfEmpty(Mono.defer(() ->
+                                                        cityRepository.findById(address.getCityId()).doOnNext(data ->
+                                                        {
+                                                            System.out.println("City Map Size" + cityMap.size());
+                                                            if (!cityMap.containsKey(data.getCityId())) {
+                                                                cityMap.put(data.getCityId(), data);
+                                                            }
+                                                        })
+                                                )
+                                        ))
         );
     }
 

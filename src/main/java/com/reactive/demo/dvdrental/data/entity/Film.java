@@ -3,6 +3,7 @@ package com.reactive.demo.dvdrental.data.entity;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table
@@ -19,9 +20,9 @@ public class Film {
     private String rentalRate;
     private long length;
     private String replacementCost;
-    private String rating;
+    @Column("rating")
+    private Rating rating;
     private java.sql.Timestamp lastUpdate;
     private String specialFeatures;
-    private String fulltext;
-
 }
+

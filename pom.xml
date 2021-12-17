@@ -142,6 +142,10 @@
             <version>1.0.6.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
