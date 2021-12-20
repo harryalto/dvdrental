@@ -11,3 +11,7 @@ Spring R2DBC based Application using Postgre SQL
 4. https://www.postgresqltutorial.com/postgresql-sample-database/
 5. https://github.com/springdoc/springdoc-openapi-demos/tree/5f18f5117fa85f3917101d9c2d8c2b5924b380a3/springdoc-openapi-spring-boot-2-webmvc
 6. 
+
+
+# Reference for R2DBC and Postgre SQL 
+1. https://github.com/pgjdbc/r2dbc-postgresql ( Read especially the Data Type Mapping)
