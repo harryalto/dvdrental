@@ -8,8 +8,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @Value
 @Builder
 public class FilmCategory {
-    private long filmId;
-    private long categoryId;
-    private java.sql.Timestamp lastUpdate;
+    long filmId;
+    long categoryId;
+    java.sql.Timestamp lastUpdate;
 
 }

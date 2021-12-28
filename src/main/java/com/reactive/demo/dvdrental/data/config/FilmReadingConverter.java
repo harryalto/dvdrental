@@ -10,22 +10,6 @@ import java.time.LocalDateTime;
 
 @ReadingConverter
 public class FilmReadingConverter implements Converter<Row, Film> {
-
-    /**
-     * private long filmId;
-     * private String title;
-     * private String description;
-     * private String releaseYear;
-     * private long languageId;
-     * private long rentalDuration;
-     * private String rentalRate;
-     * private long length;
-     * private String replacementCost;
-     *
-     * @Column("rating") private MpaaRating rating;
-     * private java.sql.Timestamp lastUpdate;
-     * private String specialFeatures;
-     */
     @Override
     public Film convert(Row row) {
         return Film.builder()

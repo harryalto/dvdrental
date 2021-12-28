@@ -22,5 +22,6 @@ public interface FilmCategoryRepository extends ReactiveCrudRepository<FilmCateg
     @Query(
             "insert into film_category (film_id, category_id, last_update) values (:#{#filmCategory.filmId}, :#{#filmCategory.categoryId}, now()) on conflict DO NOTHING"
     )
+    @Override
     Mono<FilmCategory> save(final FilmCategory filmCategory);
 }

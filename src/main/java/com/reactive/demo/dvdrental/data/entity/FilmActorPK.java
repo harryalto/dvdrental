@@ -8,6 +8,6 @@ import java.io.Serializable;
 @Value
 @Builder
 public class FilmActorPK implements Serializable {
-    private long filmId;
-    private long actorId;
+    long filmId;
+    long actorId;
 }

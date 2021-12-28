@@ -16,20 +16,20 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class Film implements Persistable<Long> {
     @Id
-    private long filmId;
-    private String title;
-    private String description;
-    private int releaseYear;
-    private long languageId;
-    private long rentalDuration;
-    private BigDecimal rentalRate;
-    private long length;
-    private BigDecimal replacementCost;
+    long filmId;
+    String title;
+    String description;
+    int releaseYear;
+    long languageId;
+    long rentalDuration;
+    BigDecimal rentalRate;
+    long length;
+    BigDecimal replacementCost;
 
     @Column("rating")
-    private MpaaRating rating;
-    private LocalDateTime lastUpdate;
-    private String[] specialFeatures;
+    MpaaRating rating;
+    LocalDateTime lastUpdate;
+    String[] specialFeatures;
 
     @Override
     public Long getId() {
