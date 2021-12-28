@@ -5,6 +5,7 @@ import com.reactive.demo.dvdrental.api.request.FilmRequest;
 import com.reactive.demo.dvdrental.controller.FilmController;
 import com.reactive.demo.dvdrental.service.FilmService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -31,7 +32,14 @@ public class FilmControllerImpl implements FilmController {
 
     @Override
     public Mono<ResponseEntity<FilmModel>> create(FilmRequest filmRequest) {
-        return null;
+
+        return filmService.create(filmRequest).map(pairData -> {
+            if (pairData.getFirst()) {
+                return new ResponseEntity<>(pairData.getSecond(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(pairData.getSecond(), HttpStatus.CREATED);
+            }
+        });
     }
 
     @Override

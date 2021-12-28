@@ -1,4 +1,4 @@
-package com.reactive.demo.dvdrental.service;
+package com.reactive.demo.dvdrental.service.implementation;
 
-public interface FilmService {
+public interface FilmServiceImplTest {
 }

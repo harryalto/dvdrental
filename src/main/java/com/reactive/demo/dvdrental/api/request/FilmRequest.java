@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Schema(title = "Film Request")
@@ -29,7 +30,7 @@ public class FilmRequest {
     private long length;
     private String replacementCost;
     private String rating;
-    private String specialFeatures;
+    private ArrayList<String> specialFeaturesList;
     private String fulltext;
     @NotNull
     List<ActorRequest> actors;
