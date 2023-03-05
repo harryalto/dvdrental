@@ -26,6 +26,9 @@ jobs:
       - run:
           name: Test
           command: mvn test
+      # run tests!
+      - run: mvn integration-test
+      - run: bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

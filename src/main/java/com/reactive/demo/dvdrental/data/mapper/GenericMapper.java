@@ -1,9 +1,16 @@
 package com.reactive.demo.dvdrental.data.mapper;
 
 import com.reactive.demo.dvdrental.api.model.*;
+import com.reactive.demo.dvdrental.api.request.ActorRequest;
+import com.reactive.demo.dvdrental.api.request.AddressRequest;
+import com.reactive.demo.dvdrental.api.request.FilmRequest;
 import com.reactive.demo.dvdrental.data.entity.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+
+import java.util.ArrayList;
 
 @Mapper(componentModel = "spring")
 public interface GenericMapper {
@@ -14,28 +21,46 @@ public interface GenericMapper {
 
     Staff convertToStaff(StaffCoreModel staffCoreModel);
 
-    ActorModel convert(Actor actor);
+    ActorModel actorToActorModel(Actor actor);
 
-    AddressModel convert(Address address);
+    AddressModel addressToAddressModel(Address address);
 
-    CityModel convert(City city);
+    CityModel cityToCityModel(City city);
 
-    CountryModel convert(Country country);
+    CountryModel countryToCountryModel(Country country);
 
-    CustomerModel convert(Customer customer);
+    CustomerModel customerToCustomerModel(Customer customer);
 
-    FilmModel convert(Film film);
+    FilmModel filmToFilmModel(Film film);
 
-    FilmCategoryModel convert(FilmCategory filmCategory);
+    FilmCategoryModel toFilmCategoryModel(FilmCategory filmCategory);
 
-    InventoryModel convert(Inventory inventory);
+    InventoryModel toInventoryModel(Inventory inventory);
 
-    LanguageModel convert(Language language);
+    LanguageModel toLanguageModel(Language language);
 
-    PaymentModel convert(Payment payment);
+    PaymentModel toPaymentModel(Payment payment);
 
-    RentalModel convert(Rental rental);
+    RentalModel toRentalModel(Rental rental);
 
-    StoreModel convert(Store store);
+    StoreModel toStoreModel(Store store);
 
+    Actor actorModelToActor(ActorModel actorModel);
+
+    Actor actorRequestToActor(ActorRequest actorModel);
+
+    Address addressRequestToAddress(AddressRequest addressRequest);
+
+    @Mapping(
+            source = "specialFeaturesList",
+            target = "specialFeatures",
+            qualifiedByName = "getSpecialFeatures")
+    Film filmRequestToFilm(FilmRequest filmRequest);
+
+    @Named("getSpecialFeatures")
+    default String[] getSpecialFeatures(ArrayList<String> specialFeatures) {
+        return specialFeatures.stream().toArray(String[]::new);
+        // return specialFeatures.toArray(new String[0]);
+        // return specialFeatures.stream().collect(Collectors.joining(",", "{", "}"));
+    }
 }

@@ -25,6 +25,32 @@
         <springdoc-openapi-webflux-ui.version>1.5.12</springdoc-openapi-webflux-ui.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
+    <profiles>
+        <!-- profile for Unit test only -->
+        <profile>
+            <id>unit</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!--profile for Integration test only -->
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+        <!-- Both Unit and Integration tests combined -->
+        <profile>
+            <id>testAll</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- Core Dependencies -->
         <dependency>
@@ -65,7 +91,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <!-- R2DBC and Postgre SQL Related Dependencies END -->
         <dependency>
@@ -116,6 +141,15 @@
             <version>1.0.6.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -148,6 +182,35 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <!-- findbugs for code quality -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
+                    </additionalClasspathElements>
+                    <parallel>none</parallel>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Jacoco Code Coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -155,6 +218,7 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>prepare-unit-tests</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -188,10 +252,11 @@
                                         </limit>
                                     </limits>
                                     <excludes>
-                                        <exclude>com.reactive.demo.dvdrental.api.model.*</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.entity.*</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.mapper.GenericMapperImpl</exclude>
-                                        <exclude>com.reactive.demo.dvdrental.data.mapper.GenericMapper</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/api/model/*.class</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/entity/*.class</exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/mapper/GenericMapperImpl.class
+                                        </exclude>
+                                        <exclude>com/reactive/demo/dvdrental/data/mapper/GenericMapper.class</exclude>
                                     </excludes>
                                 </rule>
                             </rules>
